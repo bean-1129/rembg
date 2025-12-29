@@ -2,8 +2,13 @@ services:
   - type: web
     name: wardrobe-bg-remover
     env: python
+    region: oregon
+    plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: gunicorn app:app --workers 1 --timeout 120 --bind 0.0.0.0:$PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
+        value: 3.12.0
+      - key: MAX_CONTENT_LENGTH
+        value: 10485760
+    healthCheckPath: /health
